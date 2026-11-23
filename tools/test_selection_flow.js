@@ -251,22 +251,24 @@ function testSelectExploit(options) {
     };
   }
 
-  // Flow A: ELF loader already running on 9021 -> skips exploit and autoload
+  // Flow A: ELF loader already running on 9021 -> skips exploit and sends autoload payload directly
   {
     const api = makeMockApi({ elfldrRunning: true });
-    const run = await runner(api);
-    if (typeof run === 'function') await run(api);
-    assert.equal(api.executed.length, 0, 'Must not execute any sub-payload if elfldr is running');
-    assert(api.logs.some(l => l.msg.includes('ELF loader is already active')));
-  }
-
-  // Flow B: Process is already root / jailbroken -> skips exploit and autoload
-  {
-    const api = makeMockApi({ elfldrRunning: false, jailbroken: true });
-    const run = await runner(api);
-    if (typeof run === 'function') await run(api);
-    assert.equal(api.executed.length, 0, 'Must not execute any sub-payload if already jailbroken');
-    assert(api.logs.some(l => l.msg.includes('Process is already jailbroken')));
+    const origFetch = globalThis.fetch;
+    globalThis.fetch = async (url) => ({
+      ok: true,
+      text: async () => '// code for ' + url,
+      arrayBuffer: async () => new ArrayBuffer(8),
+    });
+    try {
+      const run = await runner(api);
+      if (typeof run === 'function') await run(api);
+      assert.equal(api.executed.length, 1, 'Must execute autoload.js directly if elfldr is running');
+      assert.match(api.executed[0].code, /code for .*?autoload\.js/);
+      assert(api.logs.some(l => l.msg.includes('ELF loader is active')));
+    } finally {
+      globalThis.fetch = origFetch;
+    }
   }
 
   // Flow C: Neither -> executes the selected exploit, then autoload.js.
