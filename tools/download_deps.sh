@@ -12,7 +12,7 @@ ELFLDR_DEST="$ROOT/build/deps/elfldr.elf"
 
 # Bundled autoload payload
 PAYLOAD_SUBMODULE="$ROOT/third_party/ps5-unified-autoloader"
-PAYLOAD_REPO="${PAYLOAD_REPO:-itsPLK/ps5-unified-autoloader}"
+PAYLOAD_REPO="${PAYLOAD_REPO:-FelipeFares/ps5-unified-autoloader-linux}"
 PAYLOAD_DEST="$ROOT/build/deps/autoload.elf"
 
 # Fetch the pinned release, verify the payload, and download it if needed.
