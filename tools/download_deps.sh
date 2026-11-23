@@ -7,12 +7,12 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Shared elfldr (same ELF across all exploit chains)
 ELFLDR_SUBMODULE="$ROOT/third_party/ps5-elfldr"
-ELFLDR_REPO="itsPLK/ps5-elfldr"
+ELFLDR_REPO="${ELFLDR_REPO:-itsPLK/ps5-elfldr}"
 ELFLDR_DEST="$ROOT/build/deps/elfldr.elf"
 
 # Bundled autoload payload
 PAYLOAD_SUBMODULE="$ROOT/third_party/ps5-unified-autoloader"
-PAYLOAD_REPO="itsPLK/ps5-unified-autoloader"
+PAYLOAD_REPO="${PAYLOAD_REPO:-itsPLK/ps5-unified-autoloader}"
 PAYLOAD_DEST="$ROOT/build/deps/autoload.elf"
 
 # Fetch the pinned release, verify the payload, and download it if needed.

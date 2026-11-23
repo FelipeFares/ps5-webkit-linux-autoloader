@@ -109,12 +109,23 @@ async function fetchText(primary, fallback) {
 }
 
 return async function (api) {
-  await api.log("[*] WebKit Autoloader initialized", "info");
+  await api.log("[*] WebKit Linux Loader initialized", "info");
 
   // Step 1: Check if ELF loader is already running
   const elfldrActive = await isElfldrRunning(api);
   if (elfldrActive) {
-    await api.log("[+] ELF loader is already active on 127.0.0.1:9021. Skipping kernel exploit and autoload.", "success");
+    await api.log("[+] ELF loader is active on 127.0.0.1:9021. Console already jailbroken, sending Linux autoloader payload...", "info");
+    const autoloadCode = await fetchText("payloads/autoload.js", "autoload.js");
+    const elfName = (api && Array.isArray(api.args) && api.args[0]) || "autoload.elf";
+    let elfBytes = null;
+    try {
+      const elfResp = await fetch(elfName);
+      if (elfResp.ok) {
+        elfBytes = await elfResp.arrayBuffer();
+      }
+    } catch (e) {}
+    await api.log(`[*] Staging and sending ${elfName}...`, "info");
+    await api.executePayload(autoloadCode, [elfName, elfBytes]);
     return;
   }
 
@@ -123,8 +134,7 @@ return async function (api) {
   // Step 2: Check if already jailbroken
   const jb = await isJailbroken(api);
   if (jb) {
-    await api.log("[+] Process is already jailbroken (uid 0). Skipping kernel exploit and autoload.", "success");
-    return;
+    await api.log("[+] Process is jailbroken (uid 0), but elfldr is not listening. Proceeding with dispatch.", "info");
   }
 
   // Step 3: Determine which exploit to run

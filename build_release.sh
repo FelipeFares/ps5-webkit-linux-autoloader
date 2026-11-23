@@ -12,12 +12,12 @@ if [ -z "$BUILD_VERSION" ]; then
     exit 1
 fi
 export BUILD_VERSION
-OUTPUT_ELF="webkit-autoloader-installer_v${BUILD_VERSION}.elf"
-HOST_PY="webkit-autoloader-host_v${BUILD_VERSION}.py"
-IMAGE_NAME="ps5-webkit-autoloader-sdk"
+OUTPUT_ELF="webkit-linux-loader-installer_v${BUILD_VERSION}.elf"
+HOST_PY="webkit-linux-loader-host_v${BUILD_VERSION}.py"
+IMAGE_NAME="ps5-webkit-linux-loader-sdk"
 
 # Remove previous versioned release outputs before rebuilding.
-rm -f webkit-autoloader-installer_v*.elf webkit-autoloader-host_v*.py
+rm -f webkit-linux-loader-installer_v*.elf webkit-linux-loader-host_v*.py
 
 if [ -z "$(docker images -q "$IMAGE_NAME")" ]; then
     docker build -t "$IMAGE_NAME" -f third_party/ps5-webkit-remote-loader/Dockerfile.sdk third_party/ps5-webkit-remote-loader

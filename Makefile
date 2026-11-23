@@ -118,7 +118,7 @@ host: $(HOST_PAYLOAD) payload-deps assets/icon.ico
 	    --payload-bin $(HOST_PAYLOAD)
 	$(PYTHON) $(LOADER)/tools/build_host.py \
 	    --dir build/host \
-	    --version $(BUILD_VERSION) --name "PS5 WEBKIT AUTOLOADER" --output webkit-autoloader-host.py
+	    --version $(BUILD_VERSION) --name "PS5 WEBKIT LINUX LOADER" --output webkit-autoloader-host.py
 
 dev: page
 	$(PYTHON) -m http.server 8123 --bind 127.0.0.1 --directory build/autoloader
