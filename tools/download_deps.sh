@@ -79,7 +79,11 @@ def fetch(url, attempts=5):
     raise last
 
 try:
-    release = json.loads(fetch(f"https://api.github.com/repos/{repo}/releases/tags/{tag}"))
+    if tag == "latest" or not tag:
+        release = json.loads(fetch(f"https://api.github.com/repos/{repo}/releases/latest"))
+        tag = release.get("tag_name", "latest")
+    else:
+        release = json.loads(fetch(f"https://api.github.com/repos/{repo}/releases/tags/{tag}"))
 except Exception as exc:
     print(f"Error: could not fetch release {tag} ({exc}).", file=sys.stderr)
     sys.exit(1)
@@ -145,7 +149,7 @@ if [ ! -e "$PAYLOAD_SUBMODULE/.git" ]; then
 fi
 
 ELFLDR_TAG="${ELFLDR_TAG:-$(git -C "$ELFLDR_SUBMODULE" describe --tags --always 2>/dev/null || echo v0.27-b57d0e9)}"
-PAYLOAD_TAG="${PAYLOAD_TAG:-$(git -C "$PAYLOAD_SUBMODULE" describe --tags --always 2>/dev/null || echo v0.1.6-e7093cd)}"
+PAYLOAD_TAG="${PAYLOAD_TAG:-v0.1.7-linux-d5e5ed2}"
 
 download_release "$ELFLDR_REPO" "$ELFLDR_TAG" "$ELFLDR_DEST"
 download_release "$PAYLOAD_REPO" "$PAYLOAD_TAG" "$PAYLOAD_DEST"
