@@ -22,6 +22,11 @@ webkit-autoloader-host_v*.py
 webkit-autoloader-host.exe
 webkit-autoloader-host_v*.exe
 webkit-autoloader-host.spec
+webkit-linux-loader-host.py
+webkit-linux-loader-host_v*.py
+webkit-linux-loader-host.exe
+webkit-linux-loader-host_v*.exe
+webkit-linux-loader-host.spec
 
 # OS / Python / logs / local references
 .DS_Store

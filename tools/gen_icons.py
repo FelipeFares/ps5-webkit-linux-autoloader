@@ -32,8 +32,8 @@ TRANSLATE = VIEWBOX * (1.0 - SCALE) / 2.0
 ICO_SIZES = [16, 24, 32, 48, 64, 128, 256]
 
 BG_GRADIENT = """    <radialGradient id="wkalBg" cx="50%" cy="50%" r="75%">
-      <stop offset="0%" stop-color="#0e182b"/>
-      <stop offset="100%" stop-color="#060a13"/>
+      <stop offset="0%" stop-color="#190e32"/>
+      <stop offset="100%" stop-color="#080312"/>
     </radialGradient>"""
 
 
@@ -87,15 +87,27 @@ def ql_render(svg_path, size):
         return f.read()
 
 
+def resvg_render(svg_path, size):
+    """Render via resvg-py when available."""
+    import resvg_py
+    return resvg_py.svg_to_bytes(svg_path=svg_path, width=size, height=size)
+
+
 def find_renderer():
     if shutil.which("rsvg-convert"):
         return rsvg_render
     if sys.platform == "darwin" and shutil.which("qlmanage"):
         return ql_render
+    try:
+        import resvg_py
+        return resvg_render
+    except ImportError:
+        pass
     sys.exit(
         "Error: no SVG renderer found.\n"
         "  Run the build inside the ps5-webkit-autoloader-sdk docker image "
         "(has rsvg-convert),\n"
+        "  install resvg-py (pip install resvg-py),\n"
         "  or use macOS where qlmanage is available."
     )
 
