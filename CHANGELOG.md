@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+* **Automatic Bazzite loader detection**: Without an `autoload-linux` config, the loader no longer
+  requires the hardcoded `bazzite-bootc-loader-v3.0.1.elf`. It looks in
+  `/data/pldmgr/payloads/local/bazzite-bootc-loader/` and launches:
+  1. `bazzite-bootc-loader.elf` if present (rename a build to this to pin it), otherwise
+  2. the highest-versioned `bazzite-bootc-loader-v<X.Y.Z>.elf`, compared numerically
+     (`v3.0.10` beats `v3.0.9`; `.sha256`/`.inputs` files are ignored).
+
+  Just drop a new [ps5-bazzite-deck](https://github.com/VivaLaVent/ps5-bazzite-deck/releases)
+  release ELF into that folder, with no renaming or config edits needed.
+* **Fixed stale cached payload name**: `PAYLOAD_TAG` was derived from the upstream
+  `ps5-unified-autoloader` submodule, so builds cached the Linux payload under the wrong
+  version name (`v0.1.7-abc3b82`). It is now pinned in the `Makefile` and exported to
+  `tools/download_deps.sh`, so the cached name always matches the downloaded release.
+
+### Dependencies
+* Updated [ps5-unified-autoloader-linux](https://github.com/FelipeFares/ps5-unified-autoloader-linux)
+  to [`v0.1.8-linux-3073227`](https://github.com/FelipeFares/ps5-unified-autoloader-linux/releases/tag/v0.1.8-linux-3073227).
+
 ## [v0.8.4] - 2026-11-23
 
 ### Dependencies
