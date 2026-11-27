@@ -12,8 +12,10 @@
 - **Coexists with WebKit Autoloader**: Uses Title ID `WKLX00001` and port `18182` so both apps can be installed side-by-side on your PS5 home screen.
 - **Cold Boot & Warm Boot**: Works on an unjailbroken console (runs kernel exploit first) OR on an already-jailbroken console (skips kernel exploit and directly launches Linux).
 - **Dedicated Config (`autoload-linux`)**: Uses `autoload-linux` (or `autoload-linux.txt`), completely ignoring `autoload.txt` so there are zero conflicts with other loaders.
-- **Out-of-the-Box Bazzite Fallback**: If no `autoload-linux` config file is present, it automatically launches:
-  `/data/pldmgr/payloads/local/bazzite-bootc-loader/bazzite-bootc-loader-v3.0.1.elf`
+- **Out-of-the-Box Bazzite Fallback**: If no `autoload-linux` config file is present, it automatically launches the Bazzite bootc loader from
+  `/data/pldmgr/payloads/local/bazzite-bootc-loader/`:
+  `bazzite-bootc-loader.elf` if present, otherwise the highest-versioned `bazzite-bootc-loader-v<X.Y.Z>.elf`.
+  Just drop a new release ELF into that folder — no renaming needed.
 
 ---
 
@@ -44,4 +46,4 @@ Example content:
 /data/pldmgr/payloads/local/bazzite-bootc-loader/bazzite-bootc-loader-v3.0.1.elf
 ```
 
-If neither file is found, it automatically boots the default path above!
+If neither file is found, it automatically boots the newest Bazzite loader in the folder above!
