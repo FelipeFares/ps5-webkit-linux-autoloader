@@ -149,7 +149,7 @@ if [ ! -e "$PAYLOAD_SUBMODULE/.git" ]; then
 fi
 
 ELFLDR_TAG="${ELFLDR_TAG:-$(git -C "$ELFLDR_SUBMODULE" describe --tags --always 2>/dev/null || echo v0.27-b57d0e9)}"
-PAYLOAD_TAG="${PAYLOAD_TAG:-v0.1.7-linux-d5e5ed2}"
+PAYLOAD_TAG="${PAYLOAD_TAG:-v0.1.8-linux-3073227}"
 
 download_release "$ELFLDR_REPO" "$ELFLDR_TAG" "$ELFLDR_DEST"
 download_release "$PAYLOAD_REPO" "$PAYLOAD_TAG" "$PAYLOAD_DEST"
